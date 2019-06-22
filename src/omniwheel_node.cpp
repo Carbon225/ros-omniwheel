@@ -57,7 +57,7 @@ void controlCallback(const geometry_msgs::Twist &twist)
         wheel_x = wheelTransform.transform.translation.x;
         wheel_y = wheelTransform.transform.translation.y;
 
-        ROS_DEBUG("Wheel %d X = %f Y = %f", wheel_id, wheel_x, wheel_y);
+        // ROS_DEBUG("Wheel %d X = %f Y = %f", wheel_id, wheel_x, wheel_y);
 
         // get wheel angle on Z axis from transform
         tf2::Quaternion quat(wheelTransform.transform.rotation.x, wheelTransform.transform.rotation.y, wheelTransform.transform.rotation.z, wheelTransform.transform.rotation.w);
@@ -72,27 +72,32 @@ void controlCallback(const geometry_msgs::Twist &twist)
         turn = 0.f;
     }
 
+    const double turn_scale = 8.f;
+
     // add rotation to speed vector
     // twist           + rotate(wheel)              - wheel
-    double rotated_x = cos(turn)*wheel_x*6.f - sin(turn)*wheel_y*6.f;
-    double rotated_y = sin(turn)*wheel_x*6.f + cos(turn)*wheel_y*6.f;
-    // ROS_INFO("X = %f Y = %f", rotated_x, rotated_y);
-    x = x + rotated_x - wheel_x*6.f;
-    y = y + rotated_y - wheel_y*6.f;
+    double rotated_x = cos(turn)*wheel_x*turn_scale - sin(turn)*wheel_y*turn_scale;
+    double rotated_y = sin(turn)*wheel_x*turn_scale + cos(turn)*wheel_y*turn_scale;
+    ROS_DEBUG("X = %f Y = %f", wheel_x, wheel_y);
+    ROS_DEBUG("Xr = %f Yr = %f", rotated_x, rotated_y);
+    x = x + rotated_x - wheel_x*turn_scale;
+    y = y + rotated_y - wheel_y*turn_scale;
 
-    // align wheel plane with X axis and project speed vector to new wheel plane
-    const double wheel_speed = x * cos(-wheel_angle) - y * sin(-wheel_angle);
+    ROS_DEBUG("Xt = %f Yt = %f", x, y);
+
+    // align wheel plane with Y axis and project speed vector to new wheel plane
+    const double wheel_speed = x * sin(-wheel_angle) + y * cos(-wheel_angle);
 
     geometry_msgs::WrenchStamped wrench;
     wrench.header.frame_id = "wheel"+std::to_string(wheel_id);
     wrench.header.stamp = ros::Time::now();
 
-    wrench.wrench.force.x = wheel_speed;
-    wrench.wrench.torque.y = wheel_speed;
+    wrench.wrench.force.y = wheel_speed;
+    wrench.wrench.torque.x = wheel_speed;
 
     motorWrenchPub.publish(wrench);
 
     std_msgs::Int16 motor_control;
-    motor_control.data = wheel_speed * 255;
+    motor_control.data = -wheel_speed * 255;
     motorSpeedPub.publish(motor_control);
 }
