@@ -33,8 +33,11 @@ def listener():
 
     rospy.Subscriber("motor_speed", Int16, callback)
 
+    pin_a = rospy.get_param('~pin_a')
+    pin_b = rospy.get_param('~pin_b')
+
     global motor
-    motor = MotorDC(15, 16)
+    motor = MotorDC(pin_a, pin_b)
 
     rospy.spin()
 
