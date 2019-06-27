@@ -98,6 +98,6 @@ void controlCallback(const geometry_msgs::Twist &twist)
     motorWrenchPub.publish(wrench);
 
     std_msgs::Int16 motor_control;
-    motor_control.data = -wheel_speed * 255;
+    motor_control.data = -wheel_speed * 100;
     motorSpeedPub.publish(motor_control);
 }
