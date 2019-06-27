@@ -1,0 +1,16 @@
+<launch>
+    <node ns="motor_a" pkg="omniwheel" type="omniwheel_node" name="controller" respawn="true">
+        <remap from="cmd_vel" to="/cmd_vel"/>
+        <param name="wheel_id" type="int" value="1"/>
+    </node>
+
+    <node ns="motor_b" pkg="omniwheel" type="omniwheel_node" name="controller" respawn="true">
+        <remap from="cmd_vel" to="/cmd_vel"/>
+        <param name="wheel_id" type="int" value="2"/>
+    </node>
+
+    <node ns="motor_c" pkg="omniwheel" type="omniwheel_node" name="controller" respawn="true">
+        <remap from="cmd_vel" to="/cmd_vel"/>
+        <param name="wheel_id" type="int" value="3"/>
+    </node>
+</launch>
