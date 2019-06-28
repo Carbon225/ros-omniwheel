@@ -2,15 +2,18 @@
     <node ns="motor_a" pkg="omniwheel" type="MotorController.py" name="dc_motor" respawn="true">
         <param name="pin_a" type="int" value="37"/>
         <param name="pin_b" type="int" value="38"/>
+        <param name="pin_en" type="int" value="15"/>
     </node>
 
     <node ns="motor_b" pkg="omniwheel" type="MotorController.py" name="dc_motor" respawn="true">
         <param name="pin_a" type="int" value="35"/>
         <param name="pin_b" type="int" value="36"/>
+        <param name="pin_en" type="int" value="13"/>
     </node>
 
     <node ns="motor_c" pkg="omniwheel" type="MotorController.py" name="dc_motor" respawn="true">
         <param name="pin_a" type="int" value="31"/>
         <param name="pin_b" type="int" value="32"/>
+        <param name="pin_en" type="int" value="11"/>
     </node>
 </launch>
