@@ -90,5 +90,5 @@ void controlCallback(const geometry_msgs::Twist &twist)
 
     std_msgs::Int16 motor_control_int;
     motor_control_int.data = -wheel_speed * 100;
-    motorSpeedPubFloat.publish(motor_control_int);
+    motorSpeedPubInt.publish(motor_control_int);
 }
