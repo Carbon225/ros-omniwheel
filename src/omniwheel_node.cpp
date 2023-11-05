@@ -85,7 +85,7 @@ void controlCallback(const geometry_msgs::Twist &twist)
     const double wheel_speed = x * sin(-wheel_angle) + y * cos(-wheel_angle);
 
     std_msgs::Float64 motor_control_float;
-    motor_control_float.data = -wheel_speed;
+    motor_control_float.data = -wheel_speed * 10;
     motorSpeedPubFloat.publish(motor_control_float);
 
     std_msgs::Int16 motor_control_int;
